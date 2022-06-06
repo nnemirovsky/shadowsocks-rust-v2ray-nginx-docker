@@ -1,0 +1,16 @@
+services:
+  shadowsocks_v2ray:
+    build: .
+    environment:
+      PASSWORD: "your password"
+    restart: on-failure
+  nginx:
+    image: nginx:stable
+    ports:
+      - "0.0.0.0:443:443/tcp"
+      - "0.0.0.0:80:80/tcp"
+    volumes:
+      - /absolute/path/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /absolute/path/nginx/domain.pem:/etc/nginx/certs/domain.pem
+      - /absolute/path/nginx/domain.key:/etc/nginx/certs/domain.key
+    restart: on-failure
