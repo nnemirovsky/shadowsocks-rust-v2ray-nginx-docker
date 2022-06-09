@@ -3,14 +3,19 @@ services:
     build: .
     environment:
       PASSWORD: "your password"
-    restart: on-failure
+    restart: unless-stopped
   nginx:
-    image: nginx:stable
+    image: nginx:stable-alpine
     ports:
-      - "0.0.0.0:443:443/tcp"
-      - "0.0.0.0:80:80/tcp"
+      - 443:443/tcp
+      - 80:80/tcp
+    environment:
+      DOMAIN: "example.com"
+      URL_TO_REDIRECT: "https://youtube.com"
+      V2RAY_PATH: "/v2ray"
+      V2RAY_INTERNAL_URL: "http://shadowsocks_v2ray:8388/"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/domain.pem:/etc/nginx/certs/domain.pem
-      - ./nginx/domain.key:/etc/nginx/certs/domain.key
-    restart: on-failure
+      - ./nginx.conf:/etc/nginx/templates/default.conf.template
+      - ./domain.pem:/etc/nginx/certs/domain.pem
+      - ./domain.key:/etc/nginx/certs/domain.key
+    restart: unless-stopped

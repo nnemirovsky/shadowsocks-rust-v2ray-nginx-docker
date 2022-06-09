@@ -1,5 +1,7 @@
 FROM ghcr.io/shadowsocks/ssserver-rust:latest
 
+LABEL maintainer="Nikita Nemirovsky"
+
 USER root
 
 RUN cd /etc/shadowsocks-rust && \
@@ -15,4 +17,3 @@ USER nobody
 ENV PASSWORD="basic_password"
 
 ENTRYPOINT exec ssserver --encrypt-method chacha20-ietf-poly1305 --server-addr 0.0.0.0:8388 --password $PASSWORD --fast-open --plugin /usr/bin/v2ray-plugin --plugin-opts "server;loglevel=trace"
-
